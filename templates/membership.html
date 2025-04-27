@@ -1,108 +1,209 @@
 {% extends "base.html" %}
-
+{% block title %}
+Абонементы - BGYM
+{% endblock %}
 {% block body %}
 <main class="container mt-5">
     <h1>Абонементы</h1>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="mt-3">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-
-    {% if current_user.membership %}
-        <div class="alert alert-info mt-4">
-            <strong>Ваш абонемент:</strong> {{ current_user.membership.type }}<br>
-            <strong>Дата окончания:</strong> {{ current_user.membership.end_date.strftime('%d.%m.%Y') }}<br>
-            <strong>Дни:</strong> {{ current_user.membership.days }}<br>
-            <strong>Время:</strong> {{ current_user.membership.time }}<br>
-            <form method="post" action="/cancel-membership" class="mt-2">
-                <button type="submit" class="btn btn-sm btn-danger">Отменить абонемент</button>
-            </form>
-        </div>
-    {% else %}
-        <div class="alert alert-warning mt-4">
-            <strong>У вас нет активного абонемента!</strong> Пожалуйста, выберите абонемент и оформите его.
-        </div>
-
-        <!-- Выбор абонемента с расписанием -->
-        <div class="mt-4">
-            <h3>Выберите абонемент</h3>
-
-            <div class="alert alert-secondary">
-                <h4>На 8 занятий</h4>
-                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#scheduleModal" data-membership="8">Оформить абонемент на 8 занятий</button>
-            </div>
-
-            <div class="alert alert-secondary">
-                <h4>На 12 занятий</h4>
-                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#scheduleModal" data-membership="12">Оформить абонемент на 12 занятий</button>
-            </div>
-
-            <div class="alert alert-secondary">
-                <h4>Пробный абонемент</h4>
-                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#scheduleModal" data-membership="trial">Оформить пробный абонемент</button>
-            </div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="mt-3">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
         </div>
     {% endif %}
-</main>
+{% endwith %}
 
+{% if current_user.membership %}
+    <div class="alert alert-info mt-4">
+        <strong>Ваш абонемент:</strong>
+        {% if current_user.membership.type == 'trial' %}
+            Пробный
+        {% elif current_user.membership.type == '8' %}
+            8 занятий
+        {% elif current_user.membership.type == '12' %}
+            12 занятий
+        {% endif %}
+        <br>
+        <strong>Дата окончания:</strong> {{ current_user.membership.end_date.strftime('%d.%m.%Y') }}<br>
+        <strong>Дни:</strong> {{ current_user.membership.days }}<br>
+        <strong>Время:</strong> {{ current_user.membership.time }}<br>
+        <form method="post" action="/cancel-membership" class="mt-2">
+            <button type="submit" class="btn btn-sm btn-danger">Отменить абонемент</button>
+        </form>
+    </div>
+{% else %}
+    <div class="alert alert-warning mt-4">
+        <strong>У вас нет активного абонемента!</strong> Пожалуйста, выберите абонемент и оформите его.
+    </div>
+
+    <!-- Выбор абонемента с расписанием -->
+    <div class="mt-4">
+        <h3>Выберите абонемент</h3>
+
+        <div class="row mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="my-0">Пробный абонемент</h4>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h2 class="card-title">3,000 тг</h2>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Срок: 7 дней</li>
+                            <li>С тренером или без</li>
+                            <li>В любое удобное время</li>
+                        </ul>
+                        <button type="button" class="btn btn-lg btn-primary mt-auto"
+                                data-bs-toggle="modal" data-bs-target="#scheduleModal"
+                                onclick="setMembershipType('trial')">
+                            Оформить пробный абонемент
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h4 class="my-0">8 занятий</h4>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h2 class="card-title">10,000 тг</h2>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Срок: 4 недели</li>
+                            <li>Занятия 2 раза в неделю</li>
+                            <li>В любое удобное время</li>
+                            <li>Без переноса занятий</li>
+                        </ul>
+                        <button type="button" class="btn btn-lg btn-outline-primary mt-auto"
+                                data-bs-toggle="modal" data-bs-target="#scheduleModal"
+                                onclick="setMembershipType('8')">
+                            Оформить абонемент на 8 занятий
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="my-0">12 занятий</h4>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h2 class="card-title">16,000 тг</h2>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Срок: 6 недель</li>
+                            <li>Занятия 3 раза в неделю</li>
+                            <li>Имеется возможность переноса</li>
+                            <li>В любое удобное время</li>
+                        </ul>
+                        <button type="button" class="btn btn-lg btn-primary mt-auto"
+                                data-bs-toggle="modal" data-bs-target="#scheduleModal"
+                                onclick="setMembershipType('12')">
+                            Оформить абонемент на 12 занятий
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+</main>
 <!-- Модальное окно для выбора расписания -->
-<div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="scheduleModalLabel">Выберите дни и время</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <form method="post" action="/membership">
                 <div class="modal-body">
                     <input type="hidden" name="membership_type" id="membership_type">
+                <div class="mb-3">
+                    <label for="days" class="form-label">Выберите дни:</label>
+                    <select multiple class="form-select" name="days[]" id="days" size="6" required>
+                        <option value="Mon">Понедельник</option>
+                        <option value="Tue">Вторник</option>
+                        <option value="Wed">Среда</option>
+                        <option value="Thu">Четверг</option>
+                        <option value="Fri">Пятница</option>
+                        <option value="Sat">Суббота</option>
+                    </select>
+                    <div class="form-text">Удерживайте Ctrl (или Command на Mac) для выбора нескольких дней</div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="days">Выберите дни:</label>
-                        <select multiple class="form-control" name="days[]" id="days">
-                            <option value="Mon">Понедельник</option>
-                            <option value="Wed">Среда</option>
-                            <option value="Fri">Пятница</option>
-                            <option value="Tue">Вторник</option>
-                            <option value="Thu">Четверг</option>
-                            <option value="Sat">Суббота</option>
-                        </select>
-                    </div>
+                <div class="mb-3">
+                    <label for="time" class="form-label">Выберите время:</label>
+                    <select class="form-select" name="time" id="time" required>
+                        <option value="">Выберите время</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                    </select>
+                </div>
 
-                    <div class="form-group">
-                        <label for="time">Выберите время:</label>
-                        <select class="form-control" name="time" id="time">
-                            <option value="9-14">9:00 - 14:00</option>
-                            <option value="15-20">15:00 - 20:00</option>
-                        </select>
-                    </div>
+                <div class="mb-3">
+                    <label for="trainer" class="form-label">Тренировка с тренером:</label>
+                    <select class="form-select" name="trainer" id="trainer" required>
+                        <option value="yes">Да</option>
+                        <option value="no">Нет</option>
+                    </select>
+                </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary">Подтвердить выбор</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Оформить абонемент</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-{% endblock %}
-
-{% block scripts %}
+<!-- JavaScript для передачи типа абонемента в модальное окно -->
 <script>
-    $('#scheduleModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var membershipType = button.data('membership');
-        var modal = $(this);
-        modal.find('#membership_type').val(membershipType);
-    });
+    function setMembershipType(type) {
+        document.getElementById('membership_type').value = type;
+
+        // Настройка выбора дней в зависимости от типа абонемента
+        const daysSelect = document.getElementById('days');
+
+        // Сбросить выбор
+        for (let i = 0; i < daysSelect.options.length; i++) {
+            daysSelect.options[i].selected = false;
+        }
+
+        // Ограничить выбор в зависимости от типа абонемента
+        if (type === '8') {
+            // Для абонемента на 8 занятий - максимум 2 дня в неделю
+            daysSelect.addEventListener('change', function() {
+                const selectedOptions = Array.from(this.selectedOptions);
+                if (selectedOptions.length > 2) {
+                    alert('Для абонемента на 8 занятий можно выбрать максимум 2 дня в неделю');
+                    selectedOptions[selectedOptions.length - 1].selected = false;
+                }
+            });
+        } else if (type === '12') {
+            // Для абонемента на 12 занятий - максимум 3 дня в неделю
+            daysSelect.addEventListener('change', function() {
+                const selectedOptions = Array.from(this.selectedOptions);
+                if (selectedOptions.length > 3) {
+                    alert('Для абонемента на 12 занятий можно выбрать максимум 3 дня в неделю');
+                    selectedOptions[selectedOptions.length - 1].selected = false;
+                }
+            });
+        }
+    }
 </script>
 {% endblock %}

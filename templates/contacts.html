@@ -1,10 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Contacts</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}
+Контакты - BGYM
+{% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal text-body-emphasis">Наши контакты</h1>
+        <p class="fs-5 text-body-secondary">Будем рады ответить на ваши вопросы</p>
+    </div>
+<div class="row justify-content-center mb-5">
+    <div class="col-md-10">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="mb-4">Контактная информация</h3>
+                        <address>
+                            <p><strong>Адрес:</strong> ул. Абая 15, Алматы, 050000</p>
+                            <p><strong>Телефон:</strong> +7 777 123 4567</p>
+                            <p><strong>Email:</strong> info@bgym.kz</p>
+                            <p><strong>Часы работы:</strong></p>
+                            <ul class="list-unstyled">
+                                <li>Понедельник - Пятница: 7:00 - 22:00</li>
+                                <li>Суббота - Воскресенье: 9:00 - 20:00</li>
+                            </ul>
+                        </address>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="mb-4">Социальные сети</h3>
+                        <div class="d-flex flex-column">
+                            <a href="#" class="btn btn-outline-primary mb-2">
+                                <i class="bi bi-instagram"></i> Instagram
+                            </a>
+                            <a href="#" class="btn btn-outline-primary mb-2">
+                                <i class="bi bi-facebook"></i> Facebook
+                            </a>
+                            <a href="#" class="btn btn-outline-primary mb-2">
+                                <i class="bi bi-telegram"></i> Telegram
+                            </a>
+                            <a href="#" class="btn btn-outline-primary mb-2">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-</body>
-</html>
+<div class="row justify-content-center mb-5">
+    <div class="col-md-10">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h3 class="mb-0">Свяжитесь с нами</h3>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Ваше имя</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Телефон</label>
+                        <input type="tel" class="form-control" id="phone">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Сообщение</label>
+                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

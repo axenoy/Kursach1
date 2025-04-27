@@ -16,6 +16,32 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 migrate = Migrate(app, db)
 
+# Добавляем фильтры для перевода типа абонемента и дней недели
+@app.template_filter('translate_membership_type')
+def translate_membership_type(value):
+    types = {
+        'trial': 'Пробный',
+        '8': '8 занятий',
+        '12': '12 занятий'
+    }
+    return types.get(value, value)
+
+@app.template_filter('translate_days')
+def translate_days(days_string):
+    days_dict = {
+        'Mon': 'Понедельник',
+        'Tue': 'Вторник',
+        'Wed': 'Среда',
+        'Thu': 'Четверг',
+        'Fri': 'Пятница',
+        'Sat': 'Суббота',
+        'Sun': 'Воскресенье'
+    }
+    if days_string:
+        days_list = days_string.split(', ')
+        return ', '.join([days_dict.get(day, day) for day in days_list])
+    return days_string
+
 # Инициализация Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -52,16 +78,6 @@ class Membership(db.Model):
         return f'<Membership {self.type}>'
 
 
-class Article(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    intro = db.Column(db.String(300), nullable=False)
-    text = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.now())
-
-    def __repr__(self):
-        return f'<Article {self.id}>'
-
 # Вспомогательные функции для Flask-Login
 @login_manager.user_loader
 def load_user(user_id):
@@ -71,11 +87,6 @@ def load_user(user_id):
 @app.route('/')
 def index():
     return render_template("index.html")
-
-@app.route('/posts')
-def posts():
-    articles = Article.query.order_by(Article.date.desc()).all()
-    return render_template("posts.html", articles=articles)
 
 
 @app.route('/membership', methods=['GET', 'POST'])
@@ -150,66 +161,14 @@ def logout():
 def about():
     return render_template("about.html")
 
-@app.route('/schedule')
+@app.route('/coaches-schedule')
 def schedule():
-    return render_template("schedule.html")
+    return render_template("coaches-schedule.html")
 
 @app.route('/contacts')
 def contacts():
     return render_template("contacts.html")
 
-@app.route('/posts/<int:id>')
-def posts_ids(id):
-    article = Article.query.get(id)
-    return render_template("posts_ids.html", article=article)
-
-@app.route('/create-article', methods=['POST', 'GET'])
-@login_required
-def create_article():
-    if request.method == "POST":
-        title = request.form['title']
-        intro = request.form['intro']
-        text = request.form['text']
-        article = Article(title=title, intro=intro, text=text)
-        try:
-            db.session.add(article)
-            db.session.commit()
-            flash("Статья успешно добавлена", "success")
-            return redirect('/posts')
-        except:
-            flash("При добавлении статьи произошла ошибка", "danger")
-            return redirect('/create-article')
-    return render_template("create-article.html")
-
-@app.route('/posts/<int:id>/delete', methods=['POST'])
-@login_required
-def post_delete(id):
-    article = Article.query.get_or_404(id)
-    try:
-        db.session.delete(article)
-        db.session.commit()
-        flash("Статья успешно удалена", "success")
-        return redirect('/posts')
-    except:
-        flash("При удалении статьи произошла ошибка", "danger")
-        return redirect('/posts')
-
-@app.route('/posts/<int:id>/edit', methods=['POST', 'GET'])
-@login_required
-def post_edit(id):
-    article = Article.query.get(id)
-    if request.method == "POST":
-        article.title = request.form['title']
-        article.intro = request.form['intro']
-        article.text = request.form['text']
-        try:
-            db.session.commit()
-            flash("Статья успешно обновлена", "success")
-            return redirect('/posts')
-        except:
-            flash("При редактировании статьи произошла ошибка", "danger")
-            return redirect('/posts')
-    return render_template("post_edit.html", article=article)
 
 @app.route('/auth', methods=['GET', 'POST'])
 def auth():

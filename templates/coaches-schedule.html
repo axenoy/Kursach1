@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %}
+Расписание тренеров - BGYM
+{% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-4 fw-normal text-body-emphasis">Расписание тренировок</h1>
+        <p class="fs-5 text-body-secondary">Выберите удобное время для занятий с нашими тренерами</p>
+    </div>
+<!-- Тренеры -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="mb-4">Наши тренеры</h2>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title h5">Александр Петров</h3>
+                <p class="card-text"><strong>Специализация:</strong> Силовые тренировки, кроссфит</p>
+                <p class="card-text"><strong>Опыт работы:</strong> 7 лет</p>
+                <p class="card-text"><strong>Сертификаты:</strong> NASM CPT, CrossFit Level 2</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title h5">Мария Иванова</h3>
+                <p class="card-text"><strong>Специализация:</strong> Групповые занятия, йога, пилатес</p>
+                <p class="card-text"><strong>Опыт работы:</strong> 5 лет</p>
+                <p class="card-text"><strong>Сертификаты:</strong> Yoga Alliance RYT 200, Pilates Mat</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title h5">Сергей Козлов</h3>
+                <p class="card-text"><strong>Специализация:</strong> Функциональные тренировки, реабилитация</p>
+                <p class="card-text"><strong>Опыт работы:</strong> 10 лет</p>
+                <p class="card-text"><strong>Сертификаты:</strong> FMS Level 2, ACSM CPT</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Недельное расписание -->
+<h2 class="mb-4">Расписание на неделю</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Время</th>
+                <th>Понедельник</th>
+                <th>Вторник</th>
+                <th>Среда</th>
+                <th>Четверг</th>
+                <th>Пятница</th>
+                <th>Суббота</th>
+                <th>Воскресенье</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>9:00 - 10:00</td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-success">Йога<br><small>Мария</small></td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-success">Йога<br><small>Мария</small></td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-secondary">-</td>
+            </tr>
+            <tr>
+                <td>10:30 - 11:30</td>
+                <td class="table-info">Пилатес<br><small>Мария</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-info">Пилатес<br><small>Мария</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-info">Пилатес<br><small>Мария</small></td>
+                <td class="table-success">Йога<br><small>Мария</small></td>
+                <td class="table-secondary">-</td>
+            </tr>
+            <tr>
+                <td>12:00 - 13:00</td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-secondary">-</td>
+            </tr>
+            <tr>
+                <td>16:00 - 17:00</td>
+                <td class="table-success">Йога<br><small>Мария</small></td>
+                <td class="table-info">Пилатес<br><small>Мария</small></td>
+                <td class="table-success">Йога<br><small>Мария</small></td>
+                <td class="table-info">Пилатес<br><small>Мария</small></td>
+                <td class="table-success">Йога<br><small>Мария</small></td>
+                <td class="table-secondary">-</td>
+                <td class="table-secondary">-</td>
+            </tr>
+            <tr>
+                <td>17:30 - 18:30</td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-primary">Функциональный тренинг<br><small>Сергей</small></td>
+                <td class="table-secondary">-</td>
+                <td class="table-secondary">-</td>
+            </tr>
+            <tr>
+                <td>19:00 - 20:00</td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-success">Йога<br><small>Мария</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-success">Йога<br><small>Мария</small></td>
+                <td class="table-warning">Силовая тренировка<br><small>Александр</small></td>
+                <td class="table-secondary">-</td>
+                <td class="table-secondary">-</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="alert alert-info mt-4">
+    <h4 class="alert-heading">Обратите внимание!</h4>
+    <p>Для групповых занятий рекомендуется записываться заранее, так как количество мест ограничено.</p>
+    <p>Для индивидуальных тренировок необходима предварительная запись с тренером.</p>
+    <hr>
+    <p class="mb-0">При возникновении вопросов обращайтесь к администратору по телефону: +7 777 123 4567</p>
+</div>
+</div>
+{% endblock %}
